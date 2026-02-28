@@ -37,9 +37,13 @@ return $form
         Forms\Components\Toggle::make('is_published'),
 
         Forms\Components\FileUpload::make('image')
-        ->image()
-        ->directory('pages')
-        ->disk('public'),
+            ->image()
+            ->disk('public')
+            ->directory('pages')
+            ->visibility('public')
+            ->preserveFilenames() //リネーム防止
+            ->nullable()
+            ->dehydrated(fn ($state) => filled($state))
     ]);
     }
 
