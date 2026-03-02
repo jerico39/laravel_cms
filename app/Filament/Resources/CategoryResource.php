@@ -13,6 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
+//管理画面のカテゴリ一覧の項目表示
+use Filament\Tables\Columns\TextColumn;
+
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
@@ -33,12 +36,25 @@ class CategoryResource extends Resource
                     ]);
     }
 
+    //管理画面のカテゴリ一覧の項目表示
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('name')
+                ->label('カテゴリ名')
+                ->searchable()
+                ->sortable(),
+
+                TextColumn::make('slug')
+                ->label('スラッグ')
+                ->searchable(),
+
+                TextColumn::make('created_at')
+                ->label('作成日')
+                ->dateTime('Y-m-d'),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])
