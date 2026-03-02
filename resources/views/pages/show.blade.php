@@ -19,7 +19,11 @@
         @foreach($newsList as $news)
             <div class="news-item">
                 <ul>
-                    <li><p>{{ $news->published_at->format('Y-m-d') }}：{{ $news->title }}</p></li>
+                    <li><p>
+                        <a href="{{ route('news.show', $news->slug) }}">
+                        {{ $news->published_at->format('Y-m-d') }}：{{ $news->title }}
+                        </a>
+                    </p></li>
                 </ul>
             </div>
         @endforeach

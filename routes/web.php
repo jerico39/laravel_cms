@@ -21,6 +21,18 @@ Route::get('/', function () {
 #    return view('welcome');
 #});
 
+//ニュースの詳細ページ
+Route::get('/news/{slug}', function ($slug) {
+
+    $news = News::published()
+        ->where('slug', $slug)
+        ->firstOrFail();
+
+    return view('news.show', compact('news'));
+
+})->name('news.show');
+
+
 Route::get('/{slug}', function ($slug) {
     $page = Page::where('slug', $slug)
         ->where('is_published', true)
