@@ -9,13 +9,12 @@ Route::get('/', function () {
     $page = Page::where('slug', 'home')
         ->where('is_published', true)
         ->firstOrFail();
+    $newsList = News::published()
+        ->latest('published_at')
+        ->take(5)
+        ->get();
 
-    $news = News::where('is_published', true)
-    ->orderByDesc('published_at')
-    ->take(5)
-    ->get();
-
-    return view('pages.show', compact('page'));
+    return view('pages.show', compact('page', 'newsList'));
 });
 
 #Route::get('/', function () {

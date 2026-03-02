@@ -18,6 +18,10 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\IconColumn;
 
+//公開判定を未来対応に変更
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Toggle;
+
 
 class NewsResource extends Resource
 {
@@ -56,10 +60,20 @@ class NewsResource extends Resource
 
             Forms\Components\RichEditor::make('content')
                 ->columnSpanFull(),
+            
+            //▼公開判定を未来対応に変更
+            Forms\Components\Toggle::make('is_published')
+                ->label('公開する')
+                ->reactive(),
 
-            Forms\Components\Toggle::make('is_published'),
+            Forms\Components\DateTimePicker::make('published_at')
+                ->label('公開日時')
+                ->seconds(false)
+                ->visible(fn ($get) => $get('is_published'))
+                ->required(fn ($get) => $get('is_published')),
+            //▲公開判定を未来対応に変更
 
-            Forms\Components\DateTimePicker::make('published_at'),       
+
                 ]);
     }
 
@@ -92,6 +106,7 @@ class NewsResource extends Resource
             TextColumn::make('created_at')
                 ->label('作成日')
                 ->dateTime('Y-m-d'),
+                
         ])
         ->defaultSort('created_at', 'desc');
     }
@@ -111,4 +126,6 @@ class NewsResource extends Resource
             'edit' => Pages\EditNews::route('/{record}/edit'),
         ];
     }
+
+    
 }
