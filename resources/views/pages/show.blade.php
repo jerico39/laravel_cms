@@ -2,35 +2,57 @@
 
 @section('title', $page->title)
 
-
-
 @section('content')
-    <h2>{{ $page->title }}</h2>
-@if($page->image)
-    <img src="{{ asset('storage/' . $page->image) }}"
-         alt="{{ $page->title }}"
-         style="max-width: 100%; height: auto;">
-@endif  
 
-@if(isset($newsList) && $newsList->count())
-    <section class="news-area">
-        <h2>NEWS</h2>
+<h1>{{ $page->title }}</h1>
 
-        @foreach($newsList as $news)
-            <div class="news-item">
-                <ul>
-                    <li><p>
-                        <a href="{{ route('news.show', $news->slug) }}">
-                        {{ $news->published_at->format('Y-m-d') }}：{{ $news->title }}
-                        </a>
-                    </p></li>
-                </ul>
-            </div>
-        @endforeach
-    </section>
+{{-- 画像 --}}
+@if(!empty($page->image))
+    <div class="page-image">
+        <img src="{{ asset('storage/'.$page->image) }}"
+             alt="{{ $page->title }}"
+             style="max-width:100%; height:auto;">
+    </div>
 @endif
 
-    <div>
-        {!! $page->content !!}
-    </div>
+
+{{-- 作成日 --}}
+@if(!empty($page->created_at))
+<p class="page-date">
+    {{ \Carbon\Carbon::parse($page->created_at)->format('Y-m-d') }}
+</p>
+@endif
+
+
+{{-- 本文 --}}
+<div class="page-content">
+    {!! $page->content !!}
+</div>
+
+
+{{-- 関連ページ --}}
+@if(isset($pageList) && $pageList->count())
+<section class="page-area">
+
+<h2>Other Pages</h2>
+
+@foreach($pageList as $item)
+<div class="page-item">
+
+    <a href="{{ route('page.show', $item->slug) }}">
+        {{ $item->title }}
+    </a>
+
+    @if(!empty($item->created_at))
+    <p>
+        {{ \Carbon\Carbon::parse($item->created_at)->format('Y-m-d') }}
+    </p>
+    @endif
+
+</div>
+@endforeach
+
+</section>
+@endif
+
 @endsection

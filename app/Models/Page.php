@@ -13,7 +13,8 @@ class Page extends Model
         'is_published',
         'image',
     ];
-
     protected $casts = [
+        'created_at' => 'datetime',
     ];
+
 }
