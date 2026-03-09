@@ -22,6 +22,11 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Toggle;
 
+use App\Support\Label;
+
+function L($name) {
+    //return Label::column($name);
+}
 
 class NewsResource extends Resource
 {
@@ -29,17 +34,38 @@ class NewsResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+     //サイドメニュー等、メニュータイトル　lang/ja/models.phpのUserを参照して自動翻訳するためのコード
+    protected static ?string $modelLabel = null;
+    protected static ?string $pluralModelLabel = null;
+
+    public static function getModelLabel(): string
+    {
+        return __('models.' . class_basename(static::$model));
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('models.' . class_basename(static::$model));
+    }
+        
+    //END
+
+    
+
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
             Forms\Components\TextInput::make('title')
+            ->label(columnLabel('title'))
             ->required(),
             Forms\Components\TextInput::make('slug')
                 ->required()
                 ->unique(ignoreRecord: true),
 
             Forms\Components\Select::make('category_id')
+                ->label(columnLabel('category_id'))
                 ->relationship('category', 'name')
                 ->searchable()
                 ->preload(),
@@ -77,6 +103,7 @@ class NewsResource extends Resource
                 ]);
     }
 
+    //管理画面のニュース一覧の項目表示(直接指定)
     public static function table(Table $table): Table
     {
         return $table
@@ -86,12 +113,12 @@ class NewsResource extends Resource
                 ->square(),
 
             TextColumn::make('title')
-                ->label('タイトル')
+                ->label(columnLabel('title'))
                 ->searchable()
                 ->sortable(),
 
             TextColumn::make('category.name')
-                ->label('カテゴリ')
+                ->label(columnLabel('category_id'))
                 ->sortable(),
 
             IconColumn::make('is_published')

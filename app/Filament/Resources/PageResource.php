@@ -14,17 +14,47 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 
+
+
+
 class PageResource extends Resource
 {
     protected static ?string $model = Page::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+       //サイドメニュー等、メニュータイトル　lang/ja/models.phpのUserを参照して自動翻訳するためのコード
+    
+    protected static ?string $modelLabel = null;
+    protected static ?string $pluralModelLabel = null;
+
+    public static function getModelLabel(): string
+    {
+        return __('models.' . class_basename(static::$model));
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('models.' . class_basename(static::$model));
+    }
+        
+    //END
+    
+    
+    protected static ?string $navigationLabel = null;
+
+    public static function getNavigationLabel(): string
+    {
+        return modelLabel(static::$model);
+    }
+
+
     public static function form(Form $form): Form
     {
-return $form
+    return $form
     ->schema([
         Forms\Components\TextInput::make('title')
+            ->label(columnLabel('title'))
             ->required(),
 
         Forms\Components\TextInput::make('slug')
@@ -52,10 +82,12 @@ return $form
         return $table
         ->columns([
             Tables\Columns\TextColumn::make('title')
+                ->label(columnLabel('title'))  //lang\ja\columns.php から翻訳して表示。以下の項目も同様
                 ->searchable()
                 ->sortable(),
-
+                
             Tables\Columns\TextColumn::make('slug')
+                ->label(columnLabel('slug'))
                 ->searchable(),
 
             Tables\Columns\IconColumn::make('is_published')

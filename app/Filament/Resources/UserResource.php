@@ -23,6 +23,24 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    //　lang/ja/models.phpのUserを参照して自動翻訳するためのコード
+    protected static ?string $modelLabel = null;
+    protected static ?string $pluralModelLabel = null;
+
+    public static function getModelLabel(): string
+    {
+        return __('models.' . class_basename(static::$model));
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('models.' . class_basename(static::$model));
+    }
+    //END
+
+    //メニューグループ化して、メニュー名を直接翻訳
+    //protected static ?string $navigationGroup = 'ユーザー管理';
+   
     public static function form(Form $form): Form
     {
         return $form
@@ -40,13 +58,9 @@ class UserResource extends Resource
             Forms\Components\TextInput::make('password')
                 ->password()
                 ->dehydrated(fn ($state) => filled($state))
-                ->required(fn ($record) => $record === null),
+                ->required(fn ($record) => $record === null)
+                ->revealable(),
 
-            Forms\Components\TextInput::make('password')
-                ->password()
-                ->dehydrateStateUsing(fn ($state) => Hash::make($state))
-                ->dehydrated(fn ($state) => filled($state))
-                ->required(fn ($record) => $record === null),
 
                 Select::make('role')
                 ->options([

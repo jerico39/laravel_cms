@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('news', function (Blueprint $table) {
-            $table->boolean('is_published')->default(false);
-            $table->timestamp('published_at')->nullable();
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('role')->default('editor');
         });
     }
 
@@ -22,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('news', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             //
         });
     }

@@ -36,6 +36,22 @@ class CategoryResource extends Resource
                     ]);
     }
 
+     //　lang/ja/models.phpのUserを参照して自動翻訳するためのコード
+    protected static ?string $modelLabel = null;
+    protected static ?string $pluralModelLabel = null;
+
+    public static function getModelLabel(): string
+    {
+        return __('models.' . class_basename(static::$model));
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('models.' . class_basename(static::$model));
+    }
+    //END
+
+
     //管理画面のカテゴリ一覧の項目表示
     public static function table(Table $table): Table
     {
