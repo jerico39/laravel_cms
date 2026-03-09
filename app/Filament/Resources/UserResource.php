@@ -41,21 +41,24 @@ class UserResource extends Resource
     //メニューグループ化して、メニュー名を直接翻訳
     //protected static ?string $navigationGroup = 'ユーザー管理';
    
+
     public static function form(Form $form): Form
     {
         return $form
         ->schema([
-
             Forms\Components\TextInput::make('name')
+                ->label(columnLabel('name'))
                 ->required()
                 ->maxLength(255),
 
             Forms\Components\TextInput::make('email')
+                ->label(columnLabel('email'))
                 ->email()
                 ->required()
                 ->unique(ignoreRecord: true),
 
             Forms\Components\TextInput::make('password')
+                ->label(columnLabel('password'))
                 ->password()
                 ->dehydrated(fn ($state) => filled($state))
                 ->required(fn ($record) => $record === null)
@@ -63,6 +66,7 @@ class UserResource extends Resource
 
 
                 Select::make('role')
+                ->label(columnLabel('role'))
                 ->options([
                     'admin' => 'Admin',
                     'editor' => 'Editor',
@@ -77,12 +81,15 @@ class UserResource extends Resource
         return $table
           ->columns([
             Tables\Columns\TextColumn::make('name')
+                ->label(columnLabel('name'))
                 ->searchable(),
 
             Tables\Columns\TextColumn::make('email')
+                ->label(columnLabel('email'))   
                 ->searchable(),
 
             Tables\Columns\TextColumn::make('created_at')
+                ->label(columnLabel('created_at'))
                 ->dateTime('Y-m-d'),
             ])
             ->filters([

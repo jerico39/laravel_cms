@@ -39,7 +39,7 @@ class PageResource extends Resource
     }
         
     //END
-    
+
     
     protected static ?string $navigationLabel = null;
 
@@ -58,15 +58,19 @@ class PageResource extends Resource
             ->required(),
 
         Forms\Components\TextInput::make('slug')
+            ->label(columnLabel('slug'))
             ->required()
             ->unique(ignoreRecord: true),
 
         Forms\Components\RichEditor::make('content')
+            ->label(columnLabel('content'))
             ->columnSpanFull(),
 
-        Forms\Components\Toggle::make('is_published'),
+        Forms\Components\Toggle::make('is_published')
+            ->label(columnLabel('is_published')),
 
         Forms\Components\FileUpload::make('image')
+            ->label(columnLabel('image'))
             ->image()
             ->disk('public')
             ->directory('pages')
@@ -91,9 +95,11 @@ class PageResource extends Resource
                 ->searchable(),
 
             Tables\Columns\IconColumn::make('is_published')
+                ->label(columnLabel('is_published'))
                 ->boolean(),
 
             Tables\Columns\TextColumn::make('updated_at')
+                ->label(columnLabel('updated_at'))
                 ->dateTime('Y-m-d H:i'),
             
         ])

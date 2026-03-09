@@ -27,10 +27,12 @@ class CategoryResource extends Resource
         return $form
             ->schema([
                         Forms\Components\TextInput::make('name')
+                            ->label(columnLabel('name'))
                             ->required()
                             ->maxLength(255),
 
                         Forms\Components\TextInput::make('slug')
+                            ->label(columnLabel('slug'))
                             ->required()
                             ->unique(ignoreRecord: true),
                     ]);
@@ -58,16 +60,16 @@ class CategoryResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                ->label('カテゴリ名')
+                ->label(columnLabel('name'))
                 ->searchable()
                 ->sortable(),
 
                 TextColumn::make('slug')
-                ->label('スラッグ')
+                ->label(columnLabel('slug'))
                 ->searchable(),
 
                 TextColumn::make('created_at')
-                ->label('作成日')
+                ->label(columnLabel('created_at'))
                 ->dateTime('Y-m-d'),
             ])
             ->defaultSort('created_at', 'desc')

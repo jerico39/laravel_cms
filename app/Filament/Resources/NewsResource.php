@@ -58,9 +58,10 @@ class NewsResource extends Resource
         return $form
             ->schema([
             Forms\Components\TextInput::make('title')
-            ->label(columnLabel('title'))
-            ->required(),
+                ->label(columnLabel('title'))
+                ->required(),
             Forms\Components\TextInput::make('slug')
+                ->label(columnLabel('slug'))
                 ->required()
                 ->unique(ignoreRecord: true),
 
@@ -71,11 +72,13 @@ class NewsResource extends Resource
                 ->preload(),
 
             Forms\Components\Select::make('tags')
+                ->label(columnLabel('tags'))
                 ->multiple()
                 ->relationship('tags', 'name')
                 ->preload(),
 
             Forms\Components\FileUpload::make('image')
+                ->label(columnLabel('image'))
                 ->image()   //拡張子が    jpg、png、webp、gif
                 ->disk('public')
                 ->directory('pages')
@@ -85,15 +88,17 @@ class NewsResource extends Resource
                 ->dehydrated(fn ($state) => filled($state)),
 
             Forms\Components\RichEditor::make('content')
+                ->label(columnLabel('content'))
                 ->columnSpanFull(),
             
             //▼公開判定を未来対応に変更
             Forms\Components\Toggle::make('is_published')
+                ->label(columnLabel('is_published'))
                 ->label('公開する')
                 ->reactive(),
 
             Forms\Components\DateTimePicker::make('published_at')
-                ->label('公開日時')
+                ->label(columnLabel('published_at'))
                 ->seconds(false)
                 ->visible(fn ($get) => $get('is_published'))
                 ->required(fn ($get) => $get('is_published')),
@@ -109,7 +114,7 @@ class NewsResource extends Resource
         return $table
         ->columns([
             ImageColumn::make('image')
-                ->label('画像')
+                ->label(columnLabel('image'))
                 ->square(),
 
             TextColumn::make('title')
@@ -122,16 +127,16 @@ class NewsResource extends Resource
                 ->sortable(),
 
             IconColumn::make('is_published')
-                ->label('公開')
+                ->label(columnLabel('is_published'))
                 ->boolean(),
 
             TextColumn::make('published_at')
-                ->label('公開日')
+                ->label(columnLabel('published_at'))
                 ->dateTime('Y-m-d')
                 ->sortable(),
 
             TextColumn::make('created_at')
-                ->label('作成日')
+                ->label(columnLabel('created_at'))
                 ->dateTime('Y-m-d'),
                 
         ])
