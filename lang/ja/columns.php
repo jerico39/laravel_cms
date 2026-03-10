@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     'id' => 'ID',
     'title' => 'タイトル',
     'slug' => 'スラッグ',

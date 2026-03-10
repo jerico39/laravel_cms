@@ -1,8 +1,11 @@
+@php
+$setting = \App\Models\Setting::first();
+@endphp
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>@yield('title')</title>
+    <title>{{ $setting->site_name }}</title>
 </head>
 <body>
 
