@@ -18,5 +18,8 @@ return [
     'name' => '名前',
     'email' => 'メールアドレス',
     'password' => 'パスワード',
-
+    'menu' => 'メニュー',
+    'menu.name' => 'メニュー名',
+    'url' => 'URL',
+    'sort' => '並び順',
 ];

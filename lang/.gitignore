@@ -1,0 +1,6 @@
+*
+!vendor/
+!ja/
+!en/
+!.gitignore
+!ja.json
