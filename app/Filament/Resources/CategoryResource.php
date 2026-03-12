@@ -53,6 +53,8 @@ class CategoryResource extends Resource
     }
     //END
 
+    protected static ?int $navigationSort = 40;
+
 
     //管理画面のカテゴリ一覧の項目表示
     public static function table(Table $table): Table

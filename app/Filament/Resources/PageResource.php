@@ -40,6 +40,7 @@ class PageResource extends Resource
         
     //END
 
+    protected static ?int $navigationSort = 20;
     
     protected static ?string $navigationLabel = null;
 

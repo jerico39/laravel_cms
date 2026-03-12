@@ -34,6 +34,13 @@ class MenuItemResource extends Resource
         return __('models.' . class_basename(static::$model));
     }
 
+      //グループ名をlang/ja/models.phpのgroups.siteから自動翻訳するためのコード
+    protected static ?string $navigationGroup = null;
+    public static function getNavigationGroup(): ?string
+    {
+        return __('models.groups.menu');
+    }
+    //END
 
     public static function form(Form $form): Form
     {

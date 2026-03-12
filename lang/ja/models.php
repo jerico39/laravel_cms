@@ -12,6 +12,7 @@ return [
     'Role' => 'ロール',
     'Permission' => 'パーミッション',
     'groups' => [
+        'menu' => 'メニュー管理',
         'content' => 'コンテンツ管理',
         'site' => 'サイト管理',
         'user' => 'ユーザー管理',

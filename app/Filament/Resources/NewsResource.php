@@ -49,9 +49,8 @@ class NewsResource extends Resource
     }
         
     //END
-
+    protected static ?int $navigationSort = 10;
     
-
 
     public static function form(Form $form): Form
     {
