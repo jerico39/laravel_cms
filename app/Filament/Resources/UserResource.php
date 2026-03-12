@@ -25,22 +25,27 @@ class UserResource extends Resource
 
     //　lang/ja/models.phpのUserを参照して自動翻訳するためのコード
     protected static ?string $modelLabel = null;
-    protected static ?string $pluralModelLabel = null;
-
     public static function getModelLabel(): string
     {
         return __('models.' . class_basename(static::$model));
     }
 
+    protected static ?string $pluralModelLabel = null;
     public static function getPluralModelLabel(): string
     {
         return __('models.' . class_basename(static::$model));
     }
+
+    //グループ名をlang/ja/models.phpのgroups.siteから自動翻訳するためのコード
+    protected static ?string $navigationGroup = null;
+    public static function getNavigationGroup(): ?string
+    {
+        return __('models.groups.site');
+    }
     //END
 
-    //メニューグループ化して、メニュー名を直接翻訳
-    //protected static ?string $navigationGroup = 'ユーザー管理';
-   
+    // メニューの順番を指定
+   protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {

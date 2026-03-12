@@ -21,6 +21,20 @@ class MenuItemResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    //lang/ja/models.phpのUserを参照して自動翻訳するためのコード
+    protected static ?string $modelLabel = null;
+    public static function getModelLabel(): string
+    {
+        return __('models.' . class_basename(static::$model));
+    }
+
+    protected static ?string $pluralModelLabel = null;
+    public static function getPluralModelLabel(): string
+    {
+        return __('models.' . class_basename(static::$model));
+    }
+
+
     public static function form(Form $form): Form
     {
         return $form

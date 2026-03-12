@@ -22,4 +22,8 @@ return [
     'menu.name' => 'メニュー名',
     'url' => 'URL',
     'sort' => '並び順',
+    'site_name' => 'サイト名',
+    'site_description' => 'サイト説明',
+    'contact_email' => 'お問い合わせメール',
+    'logo' => 'ロゴ',
 ];
