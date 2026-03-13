@@ -58,6 +58,12 @@ class TagResource extends Resource
     //END
    
 
+    protected static ?string $navigationGroup = null;
+    public static function getNavigationGroup(): ?string
+    {
+        return __('models.groups.content');  // コンテンツ管理
+    }
+
     //管理画面のカテゴリ一覧の項目表示
     public static function table(Table $table): Table
     {

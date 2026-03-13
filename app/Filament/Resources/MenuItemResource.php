@@ -42,6 +42,10 @@ class MenuItemResource extends Resource
     }
     //END
 
+    
+    //サイドメニュー並び順
+    protected static ?int $navigationSort = 20;
+    
     public static function form(Form $form): Form
     {
         return $form

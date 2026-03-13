@@ -49,9 +49,16 @@ class NewsResource extends Resource
     }
         
     //END
+ 
+    protected static ?string $navigationGroup = null;
+    public static function getNavigationGroup(): ?string
+    {
+        return __('models.groups.content');  // コンテンツ管理
+    }
+
+       //並び順
     protected static ?int $navigationSort = 10;
     
-
     public static function form(Form $form): Form
     {
         return $form

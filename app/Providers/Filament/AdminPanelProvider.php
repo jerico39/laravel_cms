@@ -18,6 +18,9 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
+use Filament\Navigation\NavigationGroup;
+use Filament\View\PanelsRenderHook;
+
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
@@ -51,6 +54,41 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->navigationGroups([
+                NavigationGroup::make()
+                    ->label(__('models.groups.content')),  // コンテンツ管理
+                NavigationGroup::make()
+                    ->label(__('models.groups.menu')),  // メニュー管理
+                NavigationGroup::make()
+                    ->label(__('models.groups.site')),  // サイト管理
+            ])
+            //サイドメニューのコンテンツ管理をデフォルトで開いた状態
+            ->renderHook(
+                PanelsRenderHook::SCRIPTS_BEFORE,
+                fn (): string => <<<'HTML'
+                    <script>
+                        (function () {
+                            try {
+                                const key = 'alpinejs-store';
+                                const raw = localStorage.getItem(key);
+
+                                if (! raw) {
+                                    return;
+                                }
+
+                                const state = JSON.parse(raw);
+
+                                if (state && state.collapsedGroups) {
+                                    delete state.collapsedGroups;
+                                    localStorage.setItem(key, JSON.stringify(state));
+                                }
+                            } catch {
+                                // ignore
+                            }
+                        })();
+                    </script>
+                HTML,
+            )
             ->authMiddleware([
                 Authenticate::class,
             ]);

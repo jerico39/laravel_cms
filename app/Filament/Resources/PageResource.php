@@ -40,6 +40,12 @@ class PageResource extends Resource
         
     //END
 
+    protected static ?string $navigationGroup = null;
+    public static function getNavigationGroup(): ?string
+    {
+        return __('models.groups.content');  // コンテンツ管理
+    }
+
     protected static ?int $navigationSort = 20;
     
     protected static ?string $navigationLabel = null;

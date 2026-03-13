@@ -32,6 +32,15 @@ Route::get('/news/{slug}', function ($slug) {
 
 })->name('news.show');
 
+//ニュース一覧ページ
+Route::get('/news', function () {
+    $newsList = News::published()
+        ->latest('published_at')
+        ->paginate(10);
+
+    return view('news.index', compact('newsList'));
+})->name('news.index');
+
 
 Route::get('/{slug}', function ($slug) {
     $page = Page::where('slug', $slug)

@@ -19,6 +19,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        \View::composer('*', function ($view) {
+            $menus = \App\Models\Menu::with(['children', 'menuItems'])->whereNull('menu_id')->orderBy('sort')->get();
+            $view->with('menus', $menus);
+        });
     }
 }

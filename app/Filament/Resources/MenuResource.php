@@ -49,6 +49,9 @@ class MenuResource extends Resource
     }
     //END
 
+    //並び順
+    protected static ?int $navigationSort = 10;
+
 
     public static function form(Form $form): Form
     {
