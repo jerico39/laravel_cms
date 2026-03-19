@@ -11,6 +11,7 @@ return [
     'MenuItem' => 'メニュー項目',
     'Role' => 'ロール',
     'Permission' => 'パーミッション',
+    'thumbnail' => 'サムネイル',
     'groups' => [
         'menu' => 'メニュー管理',
         'content' => 'コンテンツ管理',

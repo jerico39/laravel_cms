@@ -7,6 +7,7 @@ return [
     'tags' => 'タグ',
     'content' => '本文',
     'image' => '画像',
+    'thumbnail' => 'サムネイル',
     'category_id' => 'カテゴリ',
     'category' => 'カテゴリ',
     'is_published' => '公開',

@@ -84,7 +84,7 @@ class NewsResource extends Resource
                 ->preload(),
 
             Forms\Components\FileUpload::make('image')
-                ->label(columnLabel('image'))
+                ->label(columnLabel('thumbnail'))
                 ->image()   //拡張子が    jpg、png、webp、gif
                 ->disk('public')
                 ->directory('pages')

@@ -79,17 +79,31 @@ class SiteSetting extends Page implements Forms\Contracts\HasForms
 
                 Forms\Components\FileUpload::make('logo')
                     ->label(columnLabel('logo'))
-                    ->directory('site'),
+                    ->image()
+                    ->directory('site')
+                    ->disk('public')
+                    ->multiple(false)
+                    ->preserveFilenames()
+                    ->storeFiles()
+                    ->visibility('public'),
 
             ]);
     }
 
 public function save()
 {
-    $setting = Setting::first();
+   
+    $data = $this->form->getState();
 
-    $setting->update($this->form->getState());
+    //これを追加（超重要）
+    if (is_array($data['logo'])) {
+        $data['logo'] = $data['logo'][0] ?? null;
+    }
 
+    //$setting = Setting::first();
+    $setting = \App\Models\Setting::firstOrCreate([]);
+
+    $setting->update($data);
     Notification::make()
         ->title('保存しました')
         ->success()

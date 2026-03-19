@@ -6,6 +6,9 @@ $setting = \App\Models\Setting::first();
 <head>
     <meta charset="UTF-8">
     <title>{{ $setting->site_name }}</title>
+    @if($setting->logo)
+        <link rel="icon" href="{{ asset('storage/logos/' . $setting->logo) }}">
+    @endif
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .dropdown {
