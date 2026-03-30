@@ -41,6 +41,9 @@ Route::get('/news', function () {
     return view('news.index', compact('newsList'));
 })->name('news.index');
 
+//アンケートの詳細ページと投票処理
+Route::get('/survey/{id}', [SurveyController::class, 'show']);
+Route::post('/survey/vote', [SurveyController::class, 'vote']);
 
 Route::get('/{slug}', function ($slug) {
     $page = Page::where('slug', $slug)
