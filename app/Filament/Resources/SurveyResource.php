@@ -26,19 +26,50 @@ class SurveyResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+      //　lang/ja/models.phpのUserを参照して自動翻訳するためのコード
+    protected static ?string $modelLabel = null;
+    protected static ?string $pluralModelLabel = null;
+
+    public static function getModelLabel(): string
+    {
+        return __('models.' . class_basename(static::$model));
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('models.' . class_basename(static::$model));
+    }
+    //END
+
+    protected static ?string $navigationGroup = null;
+    public static function getNavigationGroup(): ?string
+    {
+        return __('models.groups.content');  // コンテンツ管理
+    }
+
+     //並び順
+    protected static ?int $navigationSort = 70;
+
+
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('title')->required(),
-
-                Textarea::make('description'),
+                Forms\Components\TextInput::make('title')
+                ->label(columnLabel('title'))
+                ->required(),
+    
+                Textarea::make('description')
+                ->label(columnLabel('description')),
 
                 DateTimePicker::make('expires_at')
-                ->label('投票期限'),
+                ->label(columnLabel('expires_end')),
 
                 Repeater::make('options')
-                ->relationship()
+                ->label(columnLabel('options'))
+                // ->relationship()
+                ->relationship('options') // ← 明示する！
                 ->schema([
                 TextInput::make('option_text')->required(),
                 ])
@@ -47,12 +78,20 @@ class SurveyResource extends Resource
             ]);
     }
 
+    //一覧
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('title'),
-                TextColumn::make('expires_at')->dateTime(),
+                TextColumn::make('id') // ← 追加（先頭）
+                    ->label(columnLabel('id'))
+                    ->sortable(),
+                TextColumn::make('title')
+                    ->label(columnLabel('title'))
+                    ->sortable(),
+                TextColumn::make('expires_at')->dateTime()
+                    ->label(columnLabel('expires_end'))
+                    ->sortable(),
             ])
             ->filters([
                 //

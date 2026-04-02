@@ -17,4 +17,6 @@ class SurveyOption extends Model
     {
         return $this->hasMany(SurveyVote::class);
     }
+
+    
 }

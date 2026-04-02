@@ -2,6 +2,7 @@
 return [
 
     'User' => 'ユーザー',
+    'Survey' => 'アンケート',
     'News' => 'ニュース',
     'Category' => 'カテゴリ',
     'Tag' => 'タグ',

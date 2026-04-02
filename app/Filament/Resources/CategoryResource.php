@@ -53,6 +53,7 @@ class CategoryResource extends Resource
     }
     //END
 
+    
     protected static ?string $navigationGroup = null;
     public static function getNavigationGroup(): ?string
     {

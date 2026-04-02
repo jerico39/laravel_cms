@@ -27,4 +27,8 @@ return [
     'site_description' => 'サイト説明',
     'contact_email' => 'お問い合わせメール',
     'logo' => 'ロゴ',
+    'expires_end' => '投票期限',
+    'description' => '説明',
+    'options' => '選択肢',
+    
 ];

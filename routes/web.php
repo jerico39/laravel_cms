@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Models\Page;
 use App\Models\News;
+use App\Http\Controllers\SurveyController;
+
 
 Route::get('/', function () {
     $page = Page::where('slug', 'home')
@@ -52,3 +54,5 @@ Route::get('/{slug}', function ($slug) {
 
     return view('pages.show', compact('page'));
 });
+
+
