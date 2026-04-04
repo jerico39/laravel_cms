@@ -18,7 +18,8 @@ return new class extends Migration
     $table->string('user_ip')->nullable();
     $table->timestamps();
 
-    $table->unique(['survey_id', 'user_ip']); // 重複防止
+    //$table->unique(['survey_id', 'user_ip']); // 重複防止
+   
         });
     }
 

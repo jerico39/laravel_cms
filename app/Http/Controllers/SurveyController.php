@@ -17,18 +17,18 @@ class SurveyController extends Controller
         return view('survey', compact('survey'));
     }
 
-    public function vote(Request $request)
-    {
-    
+   public function vote(Request $request)
+{
+   
     $survey = Survey::findOrFail($request->survey_id);
 
-    // 期限チェック
     if ($survey->expires_at && now()->gt($survey->expires_at)) {
+        
         return back()->with('error', '期限切れ');
     }
-
-    // 🔥 新規選択肢（ここが重要）
-    if ($request->filled('new_option')) {
+     
+    // 🔥 new_option優先（これが最強）
+    if (!empty(trim($request->new_option))) {
 
         $option = SurveyOption::create([
             'survey_id' => $survey->id,
@@ -36,26 +36,22 @@ class SurveyController extends Controller
             'is_user_generated' => true,
         ]);
 
-    } else {
+    } elseif ($request->option_id) {
 
         $option = SurveyOption::findOrFail($request->option_id);
+
+    } else {
+
+        return back()->with('error', '選択してください');
     }
 
-    // 投票
     SurveyVote::create([
         'survey_id' => $survey->id,
         'survey_option_id' => $option->id,
         'user_ip' => request()->ip(),
     ]);
 
-    // コメント
-    if ($request->comment) {
-        SurveyComment::create([
-            'survey_id' => $survey->id,
-            'comment' => $request->comment,
-        ]);
-    }
-
     return back()->with('success', '投票しました');
 }
+   
 }

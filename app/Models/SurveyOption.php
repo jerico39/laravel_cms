@@ -18,5 +18,11 @@ class SurveyOption extends Model
         return $this->hasMany(SurveyVote::class);
     }
 
-    
+    // 追加: コメントとのリレーション
+    public function comments()
+    {
+        //return $this->hasMany(SurveyComment::class);
+        return $this->hasMany(SurveyComment::class, 'survey_option_id');
+
+    }
 }

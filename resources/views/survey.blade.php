@@ -1,5 +1,20 @@
+
+
+
+<h1>{{ $survey->title }}</h1>
+
+@if($survey->description)
+    <p>{{ $survey->description }}</p>
+@endif
+    @if (session('error'))
+    <div style="color:red;">
+        {{ session('error') }}
+    </div>
+    @endif
 <form method="POST" action="/survey/vote">
     @csrf
+
+
     <input type="hidden" name="survey_id" value="{{ $survey->id }}">
 
     {{-- 既存 --}}

@@ -18,7 +18,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\DateTimePicker;
-
+use Filament\Tables\Actions\Action;
+use App\Filament\Resources\SurveyResource\Pages\ViewSurveyResults;
 
 class SurveyResource extends Resource
 {
@@ -96,8 +97,16 @@ class SurveyResource extends Resource
             ->filters([
                 //
             ])
+            
             ->actions([
                 Tables\Actions\EditAction::make(),
+
+
+                Tables\Actions\Action::make('results')
+                ->label('結果')
+                //->url(fn ($record) => static::getUrl('viewSurveyResults', ['record' => $record]))
+                ->url(fn ($record) => static::getUrl('results', ['record' => $record]))
+                ->icon('heroicon-o-chart-bar'),
 
                 Tables\Actions\Action::make('csv')
                 ->label('CSV')
@@ -121,6 +130,9 @@ class SurveyResource extends Resource
                     }, 'survey.csv');
 
                 })
+
+
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -136,12 +148,16 @@ class SurveyResource extends Resource
         ];
     }
 
+
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListSurveys::route('/'),
             'create' => Pages\CreateSurvey::route('/create'),
             'edit' => Pages\EditSurvey::route('/{record}/edit'),
+            //'viewSurveyResults' => Pages\ViewSurveyResults::route('/{record}/results'),
+            'results' => ViewSurveyResults::route('/{record}/results'),
+            
         ];
     }
 }
