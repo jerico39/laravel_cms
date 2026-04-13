@@ -11,6 +11,11 @@
         {{ session('error') }}
     </div>
     @endif
+        @if (session('msg'))
+    <div style="color:green;">
+        {{ session('msg') }}
+    </div>
+    @endif
 <form method="POST" action="/survey/vote">
     @csrf
 
@@ -21,7 +26,7 @@
     @foreach($survey->options as $option)
         <div>
             <label>
-                <input type="radio" name="option_id" value="{{ $option->id }}">
+                <input type="radio" name="survey_option_id" value="{{ $option->id }}">
                 {{ $option->option_text }}
             </label>
         </div>
@@ -32,14 +37,20 @@
     {{-- 新規 --}}
     <div>
         <label>
-            <input type="radio" name="option_id" value="new">
-            <input type="text" name="new_option"
+            <input type="radio" name="survey_option_id" value="new">
+            <input type="text" name="new_option" value="{{ old('new_option') }}"
         placeholder="新しい選択肢"
         onfocus="this.closest('form').querySelector('input[value=new]').checked = true;">
         </label>
+        @error('new_option')
+            <div style="color:red;">
+                {{ $message }}
+            </div>
+        @enderror
     </div>
 
-    <textarea name="comment"></textarea>
+
+    <textarea name="comment" class="border w-full mt-2">{{ old('comment') }}</textarea>
 
     <button type="submit">投票</button>
 </form>

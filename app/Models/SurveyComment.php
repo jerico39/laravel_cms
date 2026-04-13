@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SurveyComment extends Model
 {
-    protected $fillable = ['survey_id', 'comment'];
+    protected $fillable = ['survey_id', 'comment', 'survey_option_id'];
 
     public function option()
     {
