@@ -20,6 +20,9 @@ use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Tables\Actions\Action;
 use App\Filament\Resources\SurveyResource\Pages\ViewSurveyResults;
+use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Grid;
+
 
 class SurveyResource extends Resource
 {
@@ -67,15 +70,27 @@ class SurveyResource extends Resource
                 DateTimePicker::make('expires_at')
                 ->label(columnLabel('expires_end')),
 
-                Repeater::make('options')
-                ->label(columnLabel('options'))
-                // ->relationship()
-                ->relationship('options') // ← 明示する！
+            Repeater::make('options')
+                ->relationship()
                 ->schema([
-                TextInput::make('option_text')->required(),
+                    Grid::make(3)->schema([
+                        // 左：入力欄
+                        TextInput::make('option_text')
+                            ->hiddenLabel()
+                            ->columnSpan(2),
+                        // 右：追加元（削除ボタン側に寄る）
+                        Placeholder::make('source')
+                            ->hiddenLabel()
+                            ->content(fn ($record) => 
+                            '追加元：' . ($record?->is_user_generated ? 'User' : 'Admin')
+                            )
+                            ->extraAttributes(['class' => 'text-right']),
+                    ]),
                 ])
-                ->createItemButtonLabel('選択肢追加')
-                ->collapsible()
+                ->createItemButtonLabel('選択肢を追加する'),
+                
+      
+                
             ]);
     }
 

@@ -21,7 +21,7 @@
 
     <hr>
 
-    <h2>コメント一覧</h2>
+    <h2>コメント一覧！</h2>
 
     @foreach($comments as $comment)
         <div style="border-bottom:1px solid #ccc; padding:5px;">
