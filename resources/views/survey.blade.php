@@ -7,14 +7,14 @@
     <p>{{ $survey->description }}</p>
 @endif
     @if (session('error'))
-    <div style="color:red;">
-        {{ session('error') }}
-    </div>
+        <div style="color:red;">
+            {{ session('error') }}
+        </div>
     @endif
-        @if (session('msg'))
-    <div style="color:green;">
-        {{ session('msg') }}
-    </div>
+    @if (session('msg'))
+        <div style="color:green;font-weight:bold;">
+            {{ session('msg') }}
+        </div>
     @endif
 <form method="POST" action="/survey/vote">
     @csrf
@@ -38,9 +38,7 @@
     <div>
         <label>
             <input type="radio" name="survey_option_id" value="new">
-            <input type="text" name="new_option" value="{{ old('new_option') }}"
-        placeholder="新しい選択肢"
-        onfocus="this.closest('form').querySelector('input[value=new]').checked = true;">
+            <input type="text" name="new_option" value="{{ old('new_option') }}" placeholder="新しい選択肢"  onfocus="this.closest('form').querySelector('input[value=new]').checked = true;">
         </label>
         @error('new_option')
             <div style="color:red;">
@@ -48,11 +46,14 @@
             </div>
         @enderror
     </div>
-
-
-    <textarea name="comment" class="border w-full mt-2">{{ old('comment') }}</textarea>
-
-    <button type="submit">投票</button>
+    <div>
+        <h3>コメント</h3>
+        <p>投票に関するご意見をお書きください(任意)</p>
+        <textarea name="comment" class="border w-full mt-2">{{ old('comment') }}</textarea>
+    </div>
+    <div>
+        <button type="submit">投票する</button>
+    </div>
 </form>
 
 

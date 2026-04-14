@@ -67,16 +67,33 @@ class SurveyController extends Controller
         $request->validate([
             'survey_id' => 'required|exists:surveys,id',
 
-            // ★ ここがポイント
-            'survey_option_id' => 'nullable|exists:survey_options,id',
+            // 以下の記載方法はsurvey_options,idの存在チェックを行う。nullの可能性をかねてnullableを追加。
+            //これだと追加の「new」が来た場合弾く。
+            //'survey_option_id' => 'nullable|exists:survey_options,id',
 
-            'new_option' => [
-                'nullable',
-                'string',
-                'max:255',
-                Rule::unique('survey_options', 'option_text')
-                    ->where(fn ($q) => $q->where('survey_id', $request->survey_id)),
-            ],
+
+            //「new」の文字列が送られてきた場合は、survey_option_idの存在チェックはスキップされるようにする。
+            'survey_option_id' => [
+            'nullable',
+            Rule::excludeIf(fn () => $request->survey_option_id === 'new'),
+            'exists:survey_options,id',
+        ],
+
+
+        'new_option' => [
+            'nullable',
+            'string',
+            'max:255',
+
+            //new選択時は必須
+            Rule::requiredIf(fn () => $request->survey_option_id === 'new'),
+
+            //new選択してないのに入力があったらNG
+            Rule::prohibitedIf(fn () => $request->survey_option_id !== 'new'),
+            // 重複チェック
+            Rule::unique('survey_options', 'option_text')
+                ->where(fn ($q) => $q->where('survey_id', $request->survey_id)),
+        ],
 
             'comment' => 'nullable|string|max:500',
         ]);
@@ -114,6 +131,13 @@ class SurveyController extends Controller
             'survey_option_id' => $option->id,
             'user_ip' => request()->ip(),
         ]);
+        /*
+        dd([
+            'comment' => $request->comment,
+            'filled' => $request->filled('comment'),
+            'option_id' => $option->id ?? null,
+        ]);
+        */
 
         // コメント保存
         if ($request->comment) {
