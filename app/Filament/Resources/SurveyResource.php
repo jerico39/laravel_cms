@@ -76,16 +76,18 @@ class SurveyResource extends Resource
                     Grid::make(3)->schema([
                         // 左：入力欄
                         TextInput::make('option_text')
+                            ->required()
+                            ->maxLength(255)
                             ->hiddenLabel()
                             ->columnSpan(2),
                         // 右：追加元（削除ボタン側に寄る）
                         Placeholder::make('source')
                             ->hiddenLabel()
                             ->content(fn ($record) => 
-                            '追加元：' . ($record?->is_user_generated ? 'User' : 'Admin')
-                            )
+                            '追加元：' . ($record?->is_user_generated ? 'User' : 'Admin'))
                             ->extraAttributes(['class' => 'text-right']),
-                    ]),
+                    ])
+                    ,
                 ])
                 ->createItemButtonLabel('選択肢を追加する'),
                 
@@ -124,27 +126,32 @@ class SurveyResource extends Resource
                 ->icon('heroicon-o-chart-bar'),
 
                 Tables\Actions\Action::make('csv')
-                ->label('CSV')
-                ->action(function ($record) {
+                    ->label('CSV')
+                    ->action(function ($record) {
 
-                    return response()->streamDownload(function () use ($record) {
+                        return response()->streamDownload(function () use ($record) {
 
-                        $handle = fopen('php://output', 'w');
+                            $handle = fopen('php://output', 'w');
 
-                        fputcsv($handle, ['選択肢', '投票数']);
+                            // ヘッダー
+                            fputcsv($handle, ['選択肢', 'コメント', 'IP', '投票日時']);
 
-                        foreach ($record->options as $option) {
-                            fputcsv($handle, [
-                                $option->option_text,
-                                $option->votes()->count(),
-                            ]);
-                        }
+                            // ★ votes単位で回すのが正解
+                            foreach ($record->votes as $vote) {
 
-                        fclose($handle);
+                                fputcsv($handle, [
+                                    $vote->option->option_text ?? '',
+                                    $vote->comment->comment ?? '',
+                                    $vote->user_ip,
+                                    $vote->created_at,
+                                ]);
+                            }
 
-                    }, 'survey.csv');
+                            fclose($handle);
 
-                })
+                        }, 'survey.csv');
+
+                    })
 
 
 

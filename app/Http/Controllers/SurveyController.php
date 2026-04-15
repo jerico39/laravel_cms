@@ -36,32 +36,7 @@ class SurveyController extends Controller
         ]);
 
 
-        //コメントのバリデーション
-        /*
-        $request->validate([
 
-            'survey_option_id' => 'required|exists:survey_options,id',
-            'comment' => 'nullable|string|max:500',
-
-            'survey_id' => 'required|exists:surveys,id',
-            'survey_option_id' => 'required',
-
-            'new_option' => [
-                'required_if:survey_option_id,new',
-                'string',
-                'max:255',
-
-                // ★ これが重要
-                Rule::unique('survey_options', 'option_text')
-                    ->where(function ($query) use ($request) {
-                        return $query->where('survey_id', $request->survey_id);
-                    }),
-            ],
-                'comment' => 'nullable|string|max:500',
-                
-
-        ]);
-*/
 
 
         $request->validate([
@@ -126,7 +101,7 @@ class SurveyController extends Controller
 
 
         // 投票保存
-        SurveyVote::create([
+        $vote = SurveyVote::create([
             'survey_id' => $survey->id,
             'survey_option_id' => $option->id,
             'user_ip' => request()->ip(),
@@ -142,6 +117,7 @@ class SurveyController extends Controller
         // コメント保存
         if ($request->comment) {
             SurveyComment::create([
+                'vote_id' => $vote->id, // ★ここが最重要
                 'survey_id' => $survey->id,
                 'survey_option_id' => $option->id,
                 'comment' => $request->input('comment'),
