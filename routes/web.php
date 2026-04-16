@@ -34,6 +34,16 @@ Route::get('/news/{slug}', function ($slug) {
 
 })->name('news.show');
 
+
+//ニュースのプレビュー（管理者のみアクセス可能）
+Route::get('/news/preview/{id}', function ($id) {
+    $news = News::findOrFail($id);
+
+    return view('news.show', compact('news'));
+})->middleware('auth')->name('news.preview');
+
+
+
 //ニュース一覧ページ
 Route::get('/news', function () {
     $newsList = News::published()

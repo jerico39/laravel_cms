@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\IconColumn;
-
+use Filament\Tables\Actions\Action;
 //公開判定を未来対応に変更
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Toggle;
@@ -118,6 +118,13 @@ class NewsResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+        ->actions([
+            Action::make('view_front')
+                ->label('フロント表示')
+                ->icon('heroicon-o-arrow-top-right-on-square')
+                ->url(fn ($record) => route('news.show', $record->slug))
+                ->openUrlInNewTab(),
+        ])
         ->columns([
             ImageColumn::make('image')
                 ->label(columnLabel('image'))
