@@ -7,7 +7,6 @@ return [
     'attributes' => [
         'new_option' => '選択肢',
         'comment' => 'コメント',
-        
     ],
 
     'accepted'               => ':attributeを承認してください。',

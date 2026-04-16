@@ -48,14 +48,22 @@
     </div>
     <div>
         <h3>コメント</h3>
-                @error('comment')
+        @error('comment')
             <div style="color:red;">
                 {{ $message }}
             </div>
         @enderror
-        <p>投票に関するご意見をお書きください(任意:500文字以内)</p>
+        <p>投票に関するご意見をお書きください(任意:200文字以内)</p><div id="count" class="text-right text-sm text-gray-500">0 / 200</div>
         <textarea name="comment" class="border w-full mt-2">{{ old('comment') }}</textarea>
+<script>
+const textarea = document.querySelector('textarea[name="comment"]');
+const counter = document.getElementById('count');
 
+textarea.addEventListener('input', () => {
+    counter.textContent = textarea.value.length + ' / 500';
+});
+</script>
+        
     </div>
     <div>
         <button type="submit">投票する</button>

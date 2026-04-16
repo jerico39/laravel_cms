@@ -58,7 +58,7 @@ class SurveyController extends Controller
         'new_option' => [
             'nullable',
             'string',
-            'max:255',
+            'max:100',
 
             //new選択時は必須
             Rule::requiredIf(fn () => $request->survey_option_id === 'new'),
@@ -70,7 +70,7 @@ class SurveyController extends Controller
                 ->where(fn ($q) => $q->where('survey_id', $request->survey_id)),
         ],
 
-            'comment' => 'nullable|string|max:500',
+        'comment' => 'nullable|string|max:200',//lang\ja\validation.php のmax=>[string よりメッセージを取得している。
         ]);
 
         //選択なし
