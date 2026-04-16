@@ -44,7 +44,11 @@ Route::get('/news', function () {
 })->name('news.index');
 
 //アンケートの詳細ページと投票処理
-Route::get('/survey/{id}', [SurveyController::class, 'show']);
+
+// 先に具体ルート
+Route::get('/survey/{id}', [SurveyController::class, 'show'])
+    ->name('survey.show');
+
 Route::post('/survey/vote', [SurveyController::class, 'vote']);
 
 Route::get('/{slug}', function ($slug) {
@@ -54,5 +58,4 @@ Route::get('/{slug}', function ($slug) {
 
     return view('pages.show', compact('page'));
 });
-
 

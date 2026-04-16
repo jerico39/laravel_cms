@@ -30,5 +30,8 @@ return [
     'expires_end' => '投票期限',
     'description' => '説明',
     'options' => '選択肢',
+    'frontend_view' => 'フロント表示',
+    'results' => '結果',        
+    'export_csv' => 'CSV出力',
     
 ];

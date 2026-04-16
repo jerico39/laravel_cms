@@ -1,6 +1,6 @@
+@extends('layouts.app')
 
-
-
+@section('content')
 <h1>{{ $survey->title }}</h1>
 
 @if($survey->description)
@@ -48,12 +48,18 @@
     </div>
     <div>
         <h3>コメント</h3>
-        <p>投票に関するご意見をお書きください(任意)</p>
+                @error('comment')
+            <div style="color:red;">
+                {{ $message }}
+            </div>
+        @enderror
+        <p>投票に関するご意見をお書きください(任意:500文字以内)</p>
         <textarea name="comment" class="border w-full mt-2">{{ old('comment') }}</textarea>
+
     </div>
     <div>
         <button type="submit">投票する</button>
     </div>
 </form>
-
+@endsection
 

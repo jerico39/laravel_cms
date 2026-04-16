@@ -45,6 +45,7 @@ class ViewSurveyResults extends Page
     }
 */
     
+
     public function mount($record)
     {
         //$this->record = $record;
@@ -58,17 +59,34 @@ class ViewSurveyResults extends Page
             'options.votes',
             'options.comments',
         ])->findOrFail($record);
+        
 
-
+        
         $this->results = $this->survey->options->map(function ($option) {
             return [
                 //'text' => $option->option_text,
                 'label' => $option->option_text, // ←変更
                 'count' => $option->votes->count(),
             ];
-        });
+        })
+        ->sortByDesc('count')   // ← 投票数の多い順にソート
+        ->values();             // ← インデックスを振り直す（重要）
 
         $this->comments = $this->survey->comments;
+
+
+        $this->survey->load([
+            'options' => function ($query) {
+                $query->withCount(['votes', 'comments']) // ← 両方カウント
+                    ->orderByDesc('votes_count')       // ① 票数
+                    ->orderByDesc('comments_count');   // ② コメント数
+            },
+            'options.comments' => function ($query) {
+                $query->latest(); // 任意（コメントの並び）
+            },
+        ]);
+
+
     }
     
 }

@@ -6,11 +6,11 @@ $setting = \App\Models\Setting::first();
 <head>
     <meta charset="UTF-8">
     <title>{{ $setting->site_name }}</title>
-    @if($setting->logo)
-        <link rel="icon" href="{{ asset('storage/logos/' . $setting->logo) }}">
-    @endif
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
+    
+        <link rel="icon" href="{{ asset('storage/' . $setting->logo) }}">
+    
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+        <style>
         .dropdown {
             position: relative;
             display: inline-block;
@@ -18,8 +18,8 @@ $setting = \App\Models\Setting::first();
         .dropdown-content {
             display: none;
             position: absolute;
-            background-color: #f9f9f9;
-            min-width: 160px;
+           
+            min-width: 120px;
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
             z-index: 1;
         }
@@ -34,7 +34,7 @@ $setting = \App\Models\Setting::first();
         }
         .dropdown-content a {
             color: black;
-            padding: 12px 16px;
+            padding: 8px 10px;
             text-decoration: none;
             display: block;
         }

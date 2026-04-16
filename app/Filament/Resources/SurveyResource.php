@@ -114,19 +114,28 @@ class SurveyResource extends Resource
             ->filters([
                 //
             ])
+
+            
             
             ->actions([
+
+                Tables\Actions\Action::make('view')
+                ->label(columnLabel('frontend_view'))
+                ->icon('heroicon-o-eye')
+                ->url(fn ($record) => route('survey.show', $record->id))
+                ->openUrlInNewTab(), // 任意（新規タブ）
+
                 Tables\Actions\EditAction::make(),
 
 
                 Tables\Actions\Action::make('results')
-                ->label('結果')
+                ->label(columnLabel('results'))
                 //->url(fn ($record) => static::getUrl('viewSurveyResults', ['record' => $record]))
                 ->url(fn ($record) => static::getUrl('results', ['record' => $record]))
                 ->icon('heroicon-o-chart-bar'),
 
                 Tables\Actions\Action::make('csv')
-                    ->label('CSV')
+                    ->label(columnLabel('export_csv'))
                     ->action(function ($record) {
 
                         return response()->streamDownload(function () use ($record) {
@@ -134,7 +143,7 @@ class SurveyResource extends Resource
                             $handle = fopen('php://output', 'w');
 
                             // ヘッダー
-                            fputcsv($handle, ['選択肢', 'コメント', 'IP', '投票日時']);
+                            fputcsv($handle, ['option', 'comment', 'IP', 'voted_at']);
 
                             // ★ votes単位で回すのが正解
                             foreach ($record->votes as $vote) {
