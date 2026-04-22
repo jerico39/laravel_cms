@@ -18,7 +18,7 @@ class EditSurvey extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-                    Action::make('view')
+            Action::make('view')
             ->label('フロントで表示')
             ->url(fn () => url('/survey/' . $this->record->id))
             ->openUrlInNewTab(),

@@ -84,58 +84,7 @@ class SurveyResource extends Resource
                         'application/octet-stream', // ← これが重要
                     ])
                     ->storeFiles(false) // ← ★これ必須
-                    ->afterStateUpdated(function ($state, callable $set, $livewire) {
-
-                    //dd($state);
-                        if (!$state) {
-                            return;
-                        }
-
-                        // 配列 or 文字列対応
-                        $filePath = is_array($state)
-                            ? array_values($state)[0] ?? null
-                            : $state;
-
-                        if (!$filePath) {
-                            return;
-                        }
-
-                        if (!Storage::disk('local')->exists($filePath)) {
-                            return;
-                        }
-
-                        $content = Storage::disk('local')->get($filePath);
-
-                        $rows = array_filter(
-                            array_map('str_getcsv', preg_split("/\r\n|\n|\r/", $content))
-                        );
-
-                        foreach ($rows as $row) {
-
-                            if (!isset($row[0]) || trim($row[0]) === '') {
-                                continue;
-                            }
-
-                            \App\Models\SurveyOption::create([
-                                'survey_id' => $livewire->record->id ?? null,
-                                'option_text' => trim($row[0]),
-                                'is_user_generated' => false,
-                            ]);
-                        }
-
-                        // ファイル削除（任意）
-                        Storage::disk('local')->delete($filePath);
-
-                        // フィールドを空に戻す（重要）
-                        $set('options_csv', null);
-                    }),
-
-
-
-
-
-
-
+                    ,
 
                 Repeater::make('options')
                     ->label(columnLabel('options_csv'))
