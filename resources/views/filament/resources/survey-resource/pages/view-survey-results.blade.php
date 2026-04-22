@@ -65,7 +65,7 @@
             <div class="mt-4 border-t pt-3">
                 @forelse ($option?->comments as $comment)
                     <div class="mb-2">
-                        <p class="text-sm text-gray-800">{{ $comment->comment }}</p>
+                        <p class="text-gray-900 dark:text-gray-100 text-sm leading-relaxed break-words whitespace-pre-wrap">{{ $comment->comment }}</p>
                         <p class="text-xs text-gray-400">
                             {{ $comment->created_at->format('Y年m月d日 H:i') }}
                         </p>

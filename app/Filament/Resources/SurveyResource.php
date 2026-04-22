@@ -22,7 +22,8 @@ use Filament\Tables\Actions\Action;
 use App\Filament\Resources\SurveyResource\Pages\ViewSurveyResults;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Grid;
-
+use Filament\Forms\Components\FileUpload;
+use Illuminate\Support\Facades\Storage;
 
 class SurveyResource extends Resource
 {
@@ -70,29 +71,95 @@ class SurveyResource extends Resource
                 DateTimePicker::make('expires_at')
                 ->label(columnLabel('expires_end')),
 
-            Repeater::make('options')
-                ->relationship()
-                ->schema([
-                    Grid::make(3)->schema([
-                        // 左：入力欄
-                        TextInput::make('option_text')
-                            ->required()
-                            ->maxLength(255)
-                            ->hiddenLabel()
-                            ->columnSpan(2),
-                        // 右：追加元（削除ボタン側に寄る）
-                        Placeholder::make('source')
-                            ->hiddenLabel()
-                            ->content(fn ($record) => 
-                            '追加元：' . ($record?->is_user_generated ? 'User' : 'Admin'))
-                            ->extraAttributes(['class' => 'text-right']),
+
+                //CSVアップロードの実装
+                FileUpload::make('options_csv')
+                    ->label(columnLabel('options_csv'))
+                    ->disk('local')
+                    ->directory('csv')
+                    ->acceptedFileTypes([
+                        'text/csv',
+                        'application/csv',
+                        'text/plain',
+                        'application/octet-stream', // ← これが重要
                     ])
-                    ,
-                ])
-                ->createItemButtonLabel('選択肢を追加する'),
-                
-      
-                
+                    ->storeFiles(false) // ← ★これ必須
+                    ->afterStateUpdated(function ($state, callable $set, $livewire) {
+
+                    //dd($state);
+                        if (!$state) {
+                            return;
+                        }
+
+                        // 配列 or 文字列対応
+                        $filePath = is_array($state)
+                            ? array_values($state)[0] ?? null
+                            : $state;
+
+                        if (!$filePath) {
+                            return;
+                        }
+
+                        if (!Storage::disk('local')->exists($filePath)) {
+                            return;
+                        }
+
+                        $content = Storage::disk('local')->get($filePath);
+
+                        $rows = array_filter(
+                            array_map('str_getcsv', preg_split("/\r\n|\n|\r/", $content))
+                        );
+
+                        foreach ($rows as $row) {
+
+                            if (!isset($row[0]) || trim($row[0]) === '') {
+                                continue;
+                            }
+
+                            \App\Models\SurveyOption::create([
+                                'survey_id' => $livewire->record->id ?? null,
+                                'option_text' => trim($row[0]),
+                                'is_user_generated' => false,
+                            ]);
+                        }
+
+                        // ファイル削除（任意）
+                        Storage::disk('local')->delete($filePath);
+
+                        // フィールドを空に戻す（重要）
+                        $set('options_csv', null);
+                    }),
+
+
+
+
+
+
+
+
+                Repeater::make('options')
+                    ->label(columnLabel('options_csv'))
+                    ->relationship()
+                    ->schema([
+                        Grid::make(3)->schema([
+                            // 左：入力欄
+                            TextInput::make('option_text')
+                                ->required()
+                                ->maxLength(255)
+                                ->hiddenLabel()
+                                ->columnSpan(2),
+                            // 右：追加元（削除ボタン側に寄る）
+                            Placeholder::make('source')
+                                ->hiddenLabel()
+                                ->content(fn ($record) => 
+                                '追加元：' . ($record?->is_user_generated ? 'User' : 'Admin'))
+                                ->extraAttributes(['class' => 'text-right']),
+                        ])
+                        ,
+                    ])
+                    ->createItemButtonLabel('選択肢を追加する'),
+
+
             ]);
     }
 
@@ -191,4 +258,9 @@ class SurveyResource extends Resource
             
         ];
     }
+
+
+  
+
+  
 }

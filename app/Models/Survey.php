@@ -7,7 +7,7 @@ use App\Models\SurveyOption;
 
 class Survey extends Model
 {
- protected $fillable = ['title', 'description', 'expires_at'];
+ protected $fillable = ['title', 'description', 'expires_at',];
 
     public function options()
     {

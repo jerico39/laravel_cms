@@ -33,5 +33,8 @@ return [
     'frontend_view' => 'フロント表示',
     'results' => '結果',        
     'export_csv' => 'CSV出力',
-    
-];
+    'options_csv' => '選択肢CSVアップロード',
+    'options_csv_helperText' => '1行につき1選択肢で登録されます',
+    'options_csv_hint' => '既存の選択肢は削除されませんが、同じ選択肢は登録されません。',
+    'options_entry' => '選択肢の入力',
+];  

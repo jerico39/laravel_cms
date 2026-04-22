@@ -9,6 +9,12 @@ return [
         'comment' => 'コメント',
     ],
 
+    'custom' => [
+        'new_option' => [
+            'prohibited' => '他の選択肢を選択した場合、新しい選択肢は入力できません。',
+        ],
+    ],
+
     'accepted'               => ':attributeを承認してください。',
     'accepted_if'            => ':otherが:valueの場合、:attributeを承認する必要があります。',
     'active_url'             => ':attributeは、有効なURLではありません。',

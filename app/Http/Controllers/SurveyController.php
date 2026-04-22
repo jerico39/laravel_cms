@@ -15,6 +15,12 @@ class SurveyController extends Controller
     public function show($id)
     {
         $survey = Survey::with('options')->findOrFail($id);
+
+            // 期限切れチェック
+    if ($survey->expires_at && now()->gt($survey->expires_at)) {
+        return view('survey.expired', compact('survey'));
+    }
+
         return view('survey', compact('survey'));
     }
 
@@ -64,13 +70,14 @@ class SurveyController extends Controller
             Rule::requiredIf(fn () => $request->survey_option_id === 'new'),
 
             //new選択してないのに入力があったらNG
-            Rule::prohibitedIf(fn () => $request->survey_option_id !== 'new'),
+            Rule::prohibitedIf(fn () => $request->survey_option_id !== 'new'), //lang\ja\validation.php のcustom=>new_option=>prohibited よりカスタムメッセージを取得している。
             // 重複チェック
             Rule::unique('survey_options', 'option_text')
                 ->where(fn ($q) => $q->where('survey_id', $request->survey_id)),
         ],
 
         'comment' => 'nullable|string|max:200',//lang\ja\validation.php のmax=>[string よりメッセージを取得している。
+        
         ]);
 
         //選択なし
