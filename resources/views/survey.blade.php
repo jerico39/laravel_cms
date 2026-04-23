@@ -27,7 +27,7 @@
         <div>
             <label>
                 <input type="radio" name="survey_option_id" value="{{ $option->id }}">
-                {{ $option->option_text }}
+                {{ $option->option_text }}@if($option->is_user_generated) [追加]@endif
             </label>
         </div>
     @endforeach
