@@ -5,9 +5,9 @@ $setting = \App\Models\Setting::first();
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>{{ $setting->site_name }}</title>
+    <title>{{ $setting?->site_name }}</title>
     
-        <link rel="icon" href="{{ asset('storage/' . $setting->logo) }}">
+        <link rel="icon" href="{{ asset('storage/' . $setting?->logo) }}">
     
     <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
         <style>
