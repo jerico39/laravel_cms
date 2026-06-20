@@ -12,14 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('survey_votes', function (Blueprint $table) {
-    $table->id();
-    $table->foreignId('survey_id')->constrained()->cascadeOnDelete();
-    $table->foreignId('survey_option_id')->constrained()->cascadeOnDelete();
-    $table->string('user_ip')->nullable();
-    $table->timestamps();
-
-    //$table->unique(['survey_id', 'user_ip']); // 重複防止
-   
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('survey_id')->index('survey_votes_survey_id_foreign');
+            $table->unsignedBigInteger('survey_option_id')->index('survey_votes_survey_option_id_foreign');
+            $table->string('user_ip')->nullable();
+            $table->timestamps();
         });
     }
 

@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('surveys', function (Blueprint $table) {
-        $table->id();
-        $table->string('title');
-        $table->text('description')->nullable();
-        $table->timestamp('expires_at')->nullable();
-        $table->timestamps();
-});
+        Schema::table('news', function (Blueprint $table) {
+            $table->foreign(['category_id'])->references(['id'])->on('categories')->onUpdate('no action')->onDelete('set null');
+        });
     }
 
     /**
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('surveys');
+        Schema::table('news', function (Blueprint $table) {
+            $table->dropForeign('news_category_id_foreign');
+        });
     }
 };

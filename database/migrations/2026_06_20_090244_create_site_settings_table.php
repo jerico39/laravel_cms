@@ -12,15 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('site_settings', function (Blueprint $table) {
-        $table->id();
-
-        // 会社情報
-        $table->string('company_name');
-        $table->string('address')->nullable();
-        $table->string('phone')->nullable();
-        $table->string('email')->nullable();
-
-        $table->timestamps();
+            $table->bigIncrements('id');
+            $table->string('company_name');
+            $table->string('address')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
+            $table->timestamps();
         });
     }
 

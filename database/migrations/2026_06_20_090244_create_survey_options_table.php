@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('survey_options', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('survey_id')->constrained()->cascadeOnDelete();
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('survey_id')->index('survey_options_survey_id_foreign');
             $table->string('option_text');
             $table->boolean('is_user_generated')->default(false);
             $table->timestamps();

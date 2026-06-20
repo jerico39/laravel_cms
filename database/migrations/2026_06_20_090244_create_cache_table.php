@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-    Schema::table('survey_comments', function (Blueprint $table) {
-        $table->foreignId('survey_option_id')
-            ->nullable()
-            ->constrained()
-            ->cascadeOnDelete();
-    });
+        Schema::create('cache', function (Blueprint $table) {
+            $table->string('key')->primary();
+            $table->mediumText('value');
+            $table->integer('expiration')->index();
+        });
     }
 
     /**
@@ -24,8 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('survey_comments', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('cache');
     }
 };

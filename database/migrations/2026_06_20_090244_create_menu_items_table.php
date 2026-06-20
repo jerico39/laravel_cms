@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('settings', function (Blueprint $table) {
-            $table->id();
-
-            $table->string('site_name')->nullable();
-            $table->string('site_description')->nullable();
-            $table->string('logo')->nullable();
-            $table->string('contact_email')->nullable();
-
+        Schema::create('menu_items', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('menu_id')->index('menu_items_menu_id_foreign');
+            $table->string('title');
+            $table->string('url');
+            $table->integer('sort')->default(0);
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('settings');
+        Schema::dropIfExists('menu_items');
     }
 };
