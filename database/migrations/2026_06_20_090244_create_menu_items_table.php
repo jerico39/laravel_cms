@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('menu_items', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('menu_id')->constrained()->cascadeOnDelete();
-            $table->string('title'); // 表示名
-            $table->string('url');   // リンク
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('menu_id')->index('menu_items_menu_id_foreign');
+            $table->string('title');
+            $table->string('url');
             $table->integer('sort')->default(0);
             $table->timestamps();
         });

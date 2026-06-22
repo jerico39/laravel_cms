@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('role')->default('editor');
+        Schema::table('menu_items', function (Blueprint $table) {
+            $table->foreign(['menu_id'])->references(['id'])->on('menus')->onUpdate('no action')->onDelete('cascade');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
+        Schema::table('menu_items', function (Blueprint $table) {
+            $table->dropForeign('menu_items_menu_id_foreign');
         });
     }
 };

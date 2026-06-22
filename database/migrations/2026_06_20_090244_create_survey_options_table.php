@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('settings', function (Blueprint $table) {
-            $table->id();
-
-            $table->string('site_name')->nullable();
-            $table->string('site_description')->nullable();
-            $table->string('logo')->nullable();
-            $table->string('contact_email')->nullable();
-
+        Schema::create('survey_options', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('survey_id')->index('survey_options_survey_id_foreign');
+            $table->string('option_text');
+            $table->boolean('is_user_generated')->default(false);
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('settings');
+        Schema::dropIfExists('survey_options');
     }
 };

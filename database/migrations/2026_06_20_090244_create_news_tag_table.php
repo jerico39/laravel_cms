@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('surveys', function (Blueprint $table) {
-        $table->id();
-        $table->string('title');
-        $table->text('description')->nullable();
-        $table->timestamp('expires_at')->nullable();
-        $table->timestamps();
-});
+        Schema::create('news_tag', function (Blueprint $table) {
+            $table->unsignedBigInteger('news_id')->index('news_tag_news_id_foreign');
+            $table->unsignedBigInteger('tag_id')->index('news_tag_tag_id_foreign');
+        });
     }
 
     /**
@@ -25,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('surveys');
+        Schema::dropIfExists('news_tag');
     }
 };

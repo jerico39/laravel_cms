@@ -11,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pages', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->string('slug')->unique();
-            $table->longText('content')->nullable();
-            $table->boolean('is_published')->default(true);
-            $table->timestamps();
+        Schema::table('news', function (Blueprint $table) {
+            $table->foreign(['category_id'])->references(['id'])->on('categories')->onUpdate('no action')->onDelete('set null');
         });
     }
 
@@ -26,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pages');
+        Schema::table('news', function (Blueprint $table) {
+            $table->dropForeign('news_category_id_foreign');
+        });
     }
 };

@@ -11,11 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tags', function (Blueprint $table) {
-            $table->id();
+        Schema::create('menus', function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->string('name');
             $table->string('slug')->unique();
             $table->timestamps();
+            $table->unsignedBigInteger('menu_id')->nullable()->index('menus_menu_id_foreign');
+            $table->string('title')->nullable();
+            $table->string('url')->nullable();
+            $table->integer('sort')->default(0);
         });
     }
 
@@ -24,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tags');
+        Schema::dropIfExists('menus');
     }
 };

@@ -12,10 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('survey_comments', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('survey_id')->constrained()->cascadeOnDelete();
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('vote_id')->index('survey_comments_vote_id_foreign');
+            $table->unsignedBigInteger('survey_id')->index('survey_comments_survey_id_foreign');
             $table->text('comment');
             $table->timestamps();
+            $table->unsignedBigInteger('survey_option_id')->nullable()->index('survey_comments_survey_option_id_foreign');
         });
     }
 
