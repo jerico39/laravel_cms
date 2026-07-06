@@ -21,17 +21,33 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Navigation\NavigationGroup;
 use Filament\View\PanelsRenderHook;
 
+use Filament\Support\Facades\FilamentView;
+use Illuminate\Support\HtmlString;
+
 class AdminPanelProvider extends PanelProvider
 {
+
+    public function boot() //202
+    {
+        // フッターのクレジットやリンクを含むクラスを非表示にするCSSを注入
+        FilamentView::registerRenderHook(
+            'panels::footer.before',
+            fn (): HtmlString => new HtmlString('<style>.fi-footer { display: none !important; }</style>'),
+        );
+    }
+
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->default()
+            //->default()
+            ->brandName('バックオフィス') // ロゴやブランド名
+            //->brandLogo(asset('images/logo.svg'))
             ->id('admin')
             ->path('admin')
             ->login()
             ->colors([
                 'primary' => Color::Amber,
+                //'primary' => Color::Indigo,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -40,8 +56,8 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+               // Widgets\AccountWidget::class,   // 「ようこそ」カード
+               // Widgets\FilamentInfoWidget::class,  // 「Filamentロゴ / ドキュメント / GitHub」カード
             ])
             ->middleware([
                 EncryptCookies::class,
