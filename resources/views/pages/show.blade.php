@@ -5,7 +5,9 @@
 @section('content')
 
 <h1>{{ $page->title }}</h1>
-
+<?
+//phpinfo()
+?>
 {{-- 画像 --}}
 @if(!empty($page->image))
     <div class="page-image">
