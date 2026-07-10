@@ -59,7 +59,9 @@ class SiteSetting extends Page implements Forms\Contracts\HasForms
     {
         $setting = Setting::first();
 
-        $this->form->fill($setting->toArray());
+        $this->form->fill(
+            $setting?->toArray() ?? []
+        );
     }
 
     public function form(Form $form): Form
