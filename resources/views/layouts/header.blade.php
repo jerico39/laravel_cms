@@ -1,5 +1,5 @@
 <header>
-    <h1>株式会社サンプル</h1>
+    <h1>{{ $setting?->site_name ?? 'サイト名未設定' }}</h1>
     <nav>
         @foreach($menus as $menu)
             @if($menu->children->count() > 0 || $menu->menuItems->count() > 0)

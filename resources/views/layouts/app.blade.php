@@ -52,7 +52,7 @@ $setting = \App\Models\Setting::first();
 </main>
 
 <footer>
-    <p>© 2026 株式会社サンプル</p>
+    <p>© 2026 {{ $setting?->site_name ?? 'サイト名未設定' }}</p>
 </footer>
 
 </body>
