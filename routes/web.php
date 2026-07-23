@@ -7,6 +7,14 @@ use App\Models\News;
 use App\Http\Controllers\SurveyController;
 
 
+use App\Http\Controllers\Auth\MemberRegisteredUserController;
+
+Route::get('/member/register', [MemberRegisteredUserController::class, 'create'])
+                ->name('member.register');
+
+Route::post('/member/register', [MemberRegisteredUserController::class, 'store']);
+
+
 Route::get('/', function () {
     $page = Page::where('slug', 'home')
         ->where('is_published', true)
