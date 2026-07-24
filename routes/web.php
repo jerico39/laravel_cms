@@ -7,12 +7,19 @@ use App\Models\News;
 use App\Http\Controllers\SurveyController;
 
 
-use App\Http\Controllers\Auth\MemberRegisteredUserController;
+use App\Http\Controllers\MemberRegisteredUserController;
 
-Route::get('/member/register', [MemberRegisteredUserController::class, 'create'])
-                ->name('member.register');
+Route::get('/member/register', [MemberRegisteredUserController::class, 'showRegistrationForm'])
+    ->name('member.register');
 
-Route::post('/member/register', [MemberRegisteredUserController::class, 'store']);
+Route::post('/member/register/confirm', [MemberRegisteredUserController::class, 'confirmRegistration'])
+    ->name('member.register.confirm');
+
+Route::post('/member/register/complete', [MemberRegisteredUserController::class, 'completeRegistration'])
+    ->name('member.register.complete.post');
+
+Route::get('/member/register/complete', [MemberRegisteredUserController::class, 'showCompletionPage'])
+    ->name('member.register.complete');
 
 
 Route::get('/', function () {
