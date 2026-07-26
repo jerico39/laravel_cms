@@ -7,7 +7,15 @@ use App\Models\SurveyOption;
 
 class Survey extends Model
 {
- protected $fillable = ['title', 'description', 'expires_at',];
+    public const VOTE_LIMIT_NONE = 'none';
+    public const VOTE_LIMIT_IP_ONCE = 'ip_once';
+    public const VOTE_LIMIT_IP_DAILY = 'ip_daily';
+
+    protected $fillable = ['title', 'description', 'expires_at', 'vote_limit_type'];
+
+    protected $attributes = [
+        'vote_limit_type' => self::VOTE_LIMIT_NONE,
+    ];
 
     public function options()
     {

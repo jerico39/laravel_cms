@@ -60,7 +60,7 @@ const textarea = document.querySelector('textarea[name="comment"]');
 const counter = document.getElementById('count');
 
 textarea.addEventListener('input', () => {
-    counter.textContent = textarea.value.length + ' / 500';
+    counter.textContent = textarea.value.length + ' / 200';
 });
 </script>
         

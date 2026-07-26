@@ -88,6 +88,29 @@ class SurveyController extends Controller
  
         }
 
+        $userIp = request()->ip();
+
+        if ($survey->vote_limit_type === Survey::VOTE_LIMIT_IP_ONCE) {
+            $already = SurveyVote::where('survey_id', $survey->id)
+                ->where('user_ip', $userIp)
+                ->exists();
+
+            if ($already) {
+                return back()->with('error', __('messages.survey.ip_once_error'));
+            }
+        }
+
+        if ($survey->vote_limit_type === Survey::VOTE_LIMIT_IP_DAILY) {
+            $already = SurveyVote::where('survey_id', $survey->id)
+                ->where('user_ip', $userIp)
+                ->where('created_at', '>=', now()->subDay())
+                ->exists();
+
+            if ($already) {
+                return back()->with('error', __('messages.survey.ip_daily_error'));
+            }
+        }
+
         // new_option優先（これが最強）
         if (!empty(trim($request->new_option))) {
 

@@ -37,4 +37,8 @@ return [
     'options_csv_helperText' => '1行につき1選択肢で登録されます',
     'options_csv_hint' => '既存の選択肢は削除されませんが、同じ選択肢は登録されません。',
     'options_entry' => '選択肢の入力',
+    'vote_limit_type' => '投票制限',
+    'vote_limit_type_option_none' => '制限なし',
+    'vote_limit_type_option_ip_daily' => '同IPは24時間に1回',
+    'vote_limit_type_option_ip_once' => '同IPはこのアンケートで1回のみ',
 ];  

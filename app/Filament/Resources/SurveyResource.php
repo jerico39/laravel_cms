@@ -69,8 +69,17 @@ class SurveyResource extends Resource
                 ->label(columnLabel('description')),
 
                 DateTimePicker::make('expires_at')
-                ->label(columnLabel('expires_end')),
+                    ->label(columnLabel('expires_end')),
 
+                Forms\Components\Select::make('vote_limit_type')
+                    ->label(columnLabel('vote_limit_type'))
+                    ->options([
+                        Survey::VOTE_LIMIT_NONE => __('columns.vote_limit_type_option_none'),
+                        Survey::VOTE_LIMIT_IP_DAILY => __('columns.vote_limit_type_option_ip_daily'),
+                        Survey::VOTE_LIMIT_IP_ONCE => __('columns.vote_limit_type_option_ip_once'),
+                    ])
+                    ->default(Survey::VOTE_LIMIT_NONE)
+                    ->required(),
 
                 //CSVアップロードの実装
                 FileUpload::make('options_csv')
@@ -125,6 +134,9 @@ class SurveyResource extends Resource
                     ->sortable(),
                 TextColumn::make('expires_at')->dateTime()
                     ->label(columnLabel('expires_end'))
+                    ->sortable(),
+                TextColumn::make('vote_limit_type')
+                    ->label(columnLabel('vote_limit_type'))
                     ->sortable(),
             ])
             ->filters([
