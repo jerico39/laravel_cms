@@ -85,4 +85,26 @@ class MemberRegisteredUserController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
+    
+    /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm()
+    {
+        return Inertia::render('Auth/Register');
+    }
+
+    /**
+     * Show the application registration complete form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationCompleteForm()
+    {
+        return Inertia::render('Auth/RegisterComplete', [
+            'message' => __('auth.registered'),
+        ]);
+    }
 }

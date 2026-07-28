@@ -9,7 +9,8 @@ $setting = \App\Models\Setting::first();
     
         <link rel="icon" href="{{ asset('storage/' . $setting?->logo) }}">
     
-    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+
+    <!-- simple.min.css CDN リンクは削除 -->
         <style>
         .dropdown {
             position: relative;
@@ -56,4 +57,4 @@ $setting = \App\Models\Setting::first();
 </footer>
 
 </body>
-</html>
+
