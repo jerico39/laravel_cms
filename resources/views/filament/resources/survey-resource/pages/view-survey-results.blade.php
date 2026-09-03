@@ -33,7 +33,7 @@
             $option = $survey->options->firstWhere('option_text', $result['label']);
             $comments = $option?->comments ?? collect();
 
-            $htmlOutput .= '<h3>' . e($result['label']) . ' ' . e($result['count']) . '</h3>' . PHP_EOL;
+            $htmlOutput .= '<h3>' . e($result['label']) . ' ' . e($result['count']) . '票</h3>' . PHP_EOL;
             $htmlOutput .= '<p>' . e($comments->first()?->comment ?? '') . '</p>' . PHP_EOL;
             $htmlOutput .= '<ul>' . PHP_EOL;
 
