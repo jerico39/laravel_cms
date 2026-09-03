@@ -27,12 +27,40 @@
         <canvas id="chart"></canvas>
     </div>
 
+    @php
+        $htmlOutput = '';
+        foreach ($results as $result) {
+            $option = $survey->options->firstWhere('option_text', $result['label']);
+            $comments = $option?->comments ?? collect();
+
+            $htmlOutput .= '<h3>' . e($result['label']) . ' ' . e($result['count']) . '</h3>' . PHP_EOL;
+            $htmlOutput .= '<p>' . e($comments->first()?->comment ?? '') . '</p>' . PHP_EOL;
+            $htmlOutput .= '<ul>' . PHP_EOL;
+
+            foreach ($comments as $comment) {
+                $htmlOutput .= '  <li>' . e($comment->comment) . '</li>' . PHP_EOL;
+            }
+
+            $htmlOutput .= '</ul>' . PHP_EOL;
+        }
+    @endphp
+
     {{-- 投票結果 --}}
     <div class="mt-6">
-        <h3 class="text-2xl font-bold mb-4 flex items-center gap-2">
-            <span class="inline-block w-1 h-8 bg-purple-600 rounded"></span>
-            投票結果
-        </h3>
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <h3 class="text-2xl font-bold flex items-center gap-2">
+                <span class="inline-block w-1 h-8 bg-purple-600 rounded"></span>
+                投票結果
+            </h3>
+            <x-filament::button
+                type="button"
+                color="gray"
+                id="download-html-output"
+            >
+                HTML出力（.txt）
+            </x-filament::button>
+        </div>
+
 <div class="grid gap-4">
     @foreach ($results as $result)
         @php
@@ -86,6 +114,24 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
+        const htmlOutput = @json($htmlOutput);
+        const downloadButton = document.getElementById('download-html-output');
+
+        if (downloadButton) {
+            downloadButton.addEventListener('click', function () {
+                const blob = new Blob(['\uFEFF', htmlOutput], {
+                    type: 'text/plain;charset=utf-8',
+                });
+                const downloadUrl = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+
+                link.href = downloadUrl;
+                link.download = 'survey-{{ $survey->id }}.txt';
+                link.click();
+                URL.revokeObjectURL(downloadUrl);
+            });
+        }
+
         const ctx = document.getElementById('chart');
         const data = @json(collect($results)->pluck('count'));
         const total = data.reduce((a, b) => a + b, 0);
